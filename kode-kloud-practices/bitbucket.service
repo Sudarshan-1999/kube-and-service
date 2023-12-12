@@ -1,0 +1,13 @@
+[Unit]
+Description=Bitbucket Server
+After=network.target
+
+[Service]
+User=atlbitbucket
+Group=atlbitbucket
+Type=forking
+ExecStart=/opt/atlassian/bitbucket/8.10.3/bin/start-bitbucket.sh
+ExecStop=/opt/atlassian/bitbucket/8.10.3/bin/stop-bitbucket.sh
+
+[Install]
+WantedBy=multi-user.target

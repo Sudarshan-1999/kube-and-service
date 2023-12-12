@@ -1,0 +1,13 @@
+[Unit]
+Description=Crowd Service
+After=network.target
+
+[Service]
+User=crowd
+Group=crowd
+Type=forking
+ExecStart=/opt/atlassian/crowd/start_crowd.sh
+ExecStop=/opt/atlassian/crowd/stop_crowd.sh
+
+[Install]
+WantedBy=multi-user.target

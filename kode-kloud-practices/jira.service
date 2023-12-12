@@ -1,0 +1,15 @@
+[Unit]
+Description=Jira Service
+After=network.target
+
+[Service]
+User=jira
+Group=jira
+Type=forking
+ExecStart=/opt/atlassian/jira/bin/start-jira.sh
+ExecStop=/opt/atlassian/jira/bin/stop-jira.sh
+
+Default-Start=2 3 4 5
+Default-Stop=0 1 6
+[Install]
+WantedBy=multi-user.target
