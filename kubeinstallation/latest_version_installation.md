@@ -26,24 +26,26 @@
 
 Your Kubernetes control-plane has initialized successfully!
 
-To start using your cluster, you need to run the following as a regular user:
+# To start using your cluster, you need to run the following as a regular user:
 
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+      mkdir -p $HOME/.kube
+      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-Alternatively, if you are the root user, you can run:
+# Alternatively, if you are the root user, you can run:
 
-  export KUBECONFIG=/etc/kubernetes/admin.conf
+      export KUBECONFIG=/etc/kubernetes/admin.conf
 
 You should now deploy a pod network to the cluster.
 Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
   https://kubernetes.io/docs/concepts/cluster-administration/addons/
 
-Then you can join any number of worker nodes by running the following on each as root:
+# Then you can join any number of worker nodes by running the following on each as root:
 
-kubeadm join 192.168.2.45:6443 --token u4l73o.0v6cr0dl3afwevif \
+    kubeadm join 192.168.2.45:6443 --token u4l73o.0v6cr0dl3afwevif \
         --discovery-token-ca-cert-hash sha256:853bffedc095b2dd51c04ff7e3cfe1dbd35e56224b8ef29103d7a8b9785fc1d0
+
+===============================================================================
 
 
 # add CNI to dns ready with the nodes
