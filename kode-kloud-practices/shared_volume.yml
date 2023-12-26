@@ -1,0 +1,75 @@
+# Create a pod named volume-share-xfusion.
+
+
+# For the first container, use image ubuntu with latest tag only and remember to mention the tag i.e ubuntu:latest,
+#  container should be named as volume-container-xfusion-1, and run a sleep command for it so that it remains in running state. Volume volume-share should be mounted at path /tmp/blog.
+
+
+# For the second container, use image ubuntu with the latest tag only and remember to mention the tag i.e ubuntu:latest, container should be named as volume-container-xfusion-2, and again run a sleep command for it so that it remains in running state. Volume volume-share should be mounted at path /tmp/demo.
+
+
+# Volume name should be volume-share of type emptyDir.
+
+
+# After creating the pod, exec into the first container i.e volume-container-xfusion-1, and just for testing create a file blog.txt with any content under the mounted path of first container i.e /tmp/blog.
+
+
+# The file blog.txt should be present under the mounted path /tmp/demo on the second container volume-container-xfusion-2 as well, since they are using a shared volume.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-share-xfusion
+  labels:
+    name: volume-share-xfusion
+spec:
+  containers:
+  - name: volume-container-xfusion-1
+    image: ubuntu:latest
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    command: ["sleep", "infinity"]
+    volumeMounts:
+      - name: volume-share
+        mountPath: /tmp/blog
+
+  - name: volume-container-xfusion-2
+    image: ubuntu:latest
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    command: [ "sleep", "infinity" ]
+    volumeMounts:
+      - name: volume-share
+        mountPath: /tmp/demo
+
+  volumes:
+    - name: volume-share
+      emptyDir: {}
+
+---
+ls
+ vim volume-share.yml
+ vi  volume-share.yml
+ ls
+ s
+ k apply -f volume-share.yml 
+ vim volume-share.yml 
+ vi volume-share.yml 
+ ls
+ k apply -f volume-share.yml 
+ k get pod 
+ k get pod  -w
+ ls
+ k get pv 
+ k get all 
+ k describe pod -o wide
+ k describe pod volume-share-xfusion -o wide
+ k describe pod volume-share-xfusion 
+ ls
+ k exec -ti pods/volume-share-xfusion -c volume-container-xfusion-1 -- bash 
+ ls
+ k exec -ti pods/volume-share-xfusion -c volume-container-xfusion-2 -- bash 
