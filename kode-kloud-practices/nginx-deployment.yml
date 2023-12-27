@@ -1,0 +1,48 @@
+# Create a deployment using nginx image with latest tag only and
+#  remember to mention the tag i.e nginx:latest. Name it as nginx-deployment.
+#   The container should be named as nginx-container, also make sure replica counts are 3.
+
+# Create a NodePort type service named nginx-service. The nodePort should be 30011.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-deployment
+  template:
+    metadata:
+      labels:
+        app: nginx-deployment
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        resources:``
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx-deployment
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30011
+  type: NodePort
+    
+
+
