@@ -1,0 +1,26 @@
+# . On jump host create an inventory file /home/thor/ansible/inventory 
+# and add all application servers as managed nodes.
+
+
+# b. On jump host create a playbook /home/thor/ansible/playbook.yml --->
+#  to copy /usr/src/finance/index.html file to all application servers at location /opt/finance.
+
+
+# Note: Validation will try to run the playbook
+# using command ansible-playbook -i inventory playbook.yml
+# so please make sure the playbook works this way without passing any extra arguments.
+
+
+---
+- name: Copy file Playbook 1
+  hosts: appservers
+  become: yes 
+  # remote_user: root
+  tasks:
+    - name: copy file
+      copy:
+        src: /usr/src/finance/index.html
+        dest: /opt/finance
+
+
+# ansible -i inventory appservers -a "ls -la /opt/finance"

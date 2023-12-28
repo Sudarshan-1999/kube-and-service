@@ -1,0 +1,28 @@
+
+# a. Create an ini type Ansible inventory file /home/thor/playbook/inventory on jump host.
+
+# b. Add App Server 1 in this inventory along with required variables that are needed to make it work.
+
+# c. The inventory hostname of the host should be the server name as per the wiki,
+#    for example stapp01 for app server 1 in Stratos DC.
+
+# Note: Validation will try to run the playbook using command ansible-playbook -i inventory playbook.yml 
+#       so please make sure the playbook works this way without passing any extra arguments.
+
+---
+- name: HTTPD package installations
+  hosts: stapp01
+  become: yes 
+  become_user: root
+  tasks: 
+    - name: install httpd
+      yum:
+        name: httpd
+        state: installed
+
+    - name: Start the httpd service
+      service:
+        name: httpd
+        state: started
+
+

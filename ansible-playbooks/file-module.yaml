@@ -1,0 +1,55 @@
+# a. Create an inventory file ~/playbook/inventory on jump host and add all app servers in it.
+
+# b. Create a playbook ~/playbook/playbook.yml to create a blank file /tmp/webapp.txt on all app servers.
+
+# c. The /tmp/webapp.txt file permission must be 0755.
+
+# d. The user/group owner of file /tmp/webapp.txt must be tony on app server 1,
+#    steve on app server 2 and banner on app server 3.
+
+# # Note: Validation will try to run the playbook using command 
+#        
+#            ansible-playbook -i inventory playbook.yml, 
+# 
+# so please make sure the playbook works this way without passing any extra arguments.
+
+---
+- name: File Module Playbook 1
+  hosts: appservers
+  become: yes 
+  tasks:
+    - name: create an empty file
+      file:
+        path: /tmp/webapp.txt
+        state: touch
+        mode: "755"
+      delegate_to: "{{ inventory_hostname }}"
+    - name: set user and group 
+      file:
+        path: /tmp/webapp.txt
+        state: present
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+      delegate_to: "{{ inventory_hostname }}"
+
+---
+- name: Create /tmp/webapp.txt file and set permissions/ownerships
+  hosts: app_servers
+  become: yes
+  tasks:
+    - name: Create /tmp/webapp.txt file
+      file:
+        path: /tmp/webapp.txt
+        state: touch
+        mode: "0755"
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Set user/group ownership on /tmp/webapp.txt
+      file:
+        path: /tmp/webapp.txt
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+      delegate_to: "{{ inventory_hostname }}"
+
+      
+# ansible -i inventory appservers -a "ls -lh /tmp/"
