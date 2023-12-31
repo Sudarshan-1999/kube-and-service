@@ -2,16 +2,18 @@
     hostnamectl set-hostname kube-master.local
 
     apt update
+    mkdir -p /etc/apt/keyrings
     curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
     sudo apt-get update
-    sudo apt-get install -y apt-transport-https ca-certificates curl ipvsadm
+    sudo apt-get install -y apt-transport-https ca-certificates curl ipvsadm containerd
     sudo apt-get install -y kubelet kubeadm kubectl
     
     echo "net.bridge.bridge-nf-call-iptables = 1" >> /etc/sysctl.conf
     modprobe br_netfilter
     sysctl -p /etc/sysctl.conf
     echo 1 > /proc/sys/net/ipv4/ip_forward
+    swapoff -a
 
     systemctl daemon-reload
 
@@ -50,3 +52,19 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 
 # add CNI to dns ready with the nodes
     kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+
+# bash auto-completes k alias command
+
+    source <(kubectl completion bash)
+    echo "source <(kubectl completion bash)" >> ~/.bashrc
+
+
+    openssl x509 -req -in sudarshan.csr -CA CA_LOCATION/ca.crt -CAkey CA_LOCATION/ca.key -CAcreateserial -out sudarshan.crt -days 500
+
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout sudarshan.key -out certificate.crt
+
+
+kubectl config set-credentials sudarshan --client-key=/home/ubuntu/sudarshan.key --client-certificate=/home/ubuntu/certificate.crt --embed-certs=false
+
+kubectl config set-context developer --user=martin --cluster=kubernetes
