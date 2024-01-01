@@ -1,0 +1,25 @@
+controlplane ~/.config ➜  cat starship.toml 
+add_newline = true
+[line_break]
+disabled = true
+
+[cmd_duration]
+disabled = true
+
+[character] 
+success_symbol = "[➜](bold green) "
+error_symbol = "[✖](bold red)"
+
+[username]
+style_user = "yellow bold"
+style_root = "red bold"
+format = "($style) "
+disabled = true
+show_always = true
+
+[hostname]
+ssh_only = false
+format =  "[$hostname](bold blue) "
+disabled = false
+
+controlplane ~/.config ➜  

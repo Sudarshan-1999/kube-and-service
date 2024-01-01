@@ -1,0 +1,20 @@
+# Create an inventory file /home/thor/playbook/inventory on jump host and add all app servers in it.
+
+# Create an Ansible playbook /home/thor/playbook/playbook.yml
+#        to install vim-enhanced package on all app servers using Ansible yum module.
+
+# Make sure user thor should be able to run the playbook on jump host.
+
+# Note: Validation will try to run playbook using command ansible-playbook -i inventory playbook.yml 
+#       so please make sure playbook works this way, without passing any extra arguments.
+
+---
+- name: Playbook for the module installations
+  become: yes
+  hosts: all
+  tasks:
+    - name: Install Vim
+      yum:
+        name: vim-enhanced
+        state: latest
+        
