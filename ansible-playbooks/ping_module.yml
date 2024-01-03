@@ -12,4 +12,4 @@
 # change the inventory file and add username into in for the ping the all managed hosts
 
 # run the 
-#     ansible -i inventory -m ping
+#   ansible -i inventory -m ping
