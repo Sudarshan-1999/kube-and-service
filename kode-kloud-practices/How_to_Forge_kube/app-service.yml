@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+  labels:
+    apps: test
+spec:
+  type: NodePort
+  ports:
+  - name: tcp-31081-5000
+    nodePort: 31081
+    port: 5000
+    protocol: TCP
+  selector:
+    app: test
