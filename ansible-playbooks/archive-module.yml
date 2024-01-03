@@ -1,0 +1,27 @@
+# Create a playbook named playbook.yml under /home/thor/ansible directory on jump host, 
+#   an inventory file is already placed under /home/thor/ansible/ directory on Jump Server itself.
+
+
+# Create an archive apps.tar.gz (make sure archive format is tar.gz) of /usr/src/sysops/ directory 
+#   ( present on each app server ) and copy it to /opt/sysops/ directory on all app servers. 
+#   The user and group owner of archive apps.tar.gz should be tony for App Server 1, 
+#   steve for App Server 2 and banner for App Server 3.
+
+# Note: Validation will try to run playbook using command ansible-playbook -i inventory playbook.yml
+#  so please make sure playbook works this way, without passing any extra arguments.
+
+
+---
+- name: Play name
+  hosts: all  
+  become: yes
+  tasks:
+    - name: archive module
+      archive:
+        path: /usr/src/sysops/
+        dest: /opt/sysops/apps.tar.gz
+        format: gz
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+
+      delegate_to: "{{ inventory_hostname }}" 
