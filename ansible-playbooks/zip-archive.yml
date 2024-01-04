@@ -1,0 +1,45 @@
+# We have an inventory file under /home/thor/ansible directory on jump host,
+# which should have all the app servers added already.
+
+# There is a zip archive /usr/src/data/xfusion.zip on jump host.
+
+# Create a playbook.yml under /home/thor/ansible/ directory on jump host itself 
+# to perform the below given tasks.
+
+# Unzip /usr/src/data/xfusion.zip archive in /opt/data/ location on all app servers.
+
+# Make sure the extracted data must has the respective sudo user as their user and group owner,
+#  i.e tony for app server 1, steve for app server 2, banner for app server 3.
+
+# The extracted data permissions must be 0655.
+
+# Note: Validation will try to run the playbook using command ansible-playbook -i inventory playbook.yml 
+# so please make sure playbook works this way, without passing any extra arguments.
+
+
+---
+- name: Play Zip 
+  hosts: all
+  become: yes
+  tasks: 
+    - name: 
+      copy:
+        src: /usr/src/data/xfusion.zip
+        dest: /opt/data/
+
+    - name: Unzip thE archive
+      unarchive:
+        src: /opt/data/xfusion.zip
+        dest: /opt/data/
+        remote_src: yes
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+
+      delegate_to: "{{ inventory_hostname }}" 
+    
+    - name: Change permission
+      file:
+        path: /opt/data/
+        state: directory
+        recurse: yes
+        mode: 0655
