@@ -54,3 +54,41 @@ install_redhat() {
 
 # Start installation process
 select_version
+
+
+[Unit]
+Description=My React App
+After=network.target
+
+[Service]
+ExecStart=/root/.nvm/versions/node/v16.0.0/bin/serve -s build 2>&1 | tee -a /home/ec2-user/workspace/Dental_frontend-pipeline_develop/react-app.log
+WorkingDirectory=/home/ec2-user/workspace/Dental_frontend-pipeline_develop/
+Restart=always
+User=root
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=default.target
+
+[Unit]
+Description=Service for keeping the PROJECT Node server on
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /home/ec2-user/workspace/Dental_frontend-pipeline_develop/process_n_run.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
+/home/ec2-user/workspace/Dental_frontend-pipeline_develop/app/logs/*.log {
+    daily
+    rotate 7
+    compress
+    missingok
+    notifempty
+    create 0640 root root
+    postrotate
+        systemctl restart node-ivory
+    endscript
+}
