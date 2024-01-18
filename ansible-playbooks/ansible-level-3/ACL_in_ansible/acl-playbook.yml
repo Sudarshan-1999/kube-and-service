@@ -1,0 +1,50 @@
+---
+- name: Playbook ACL
+  hosts: all
+  become: yes
+  tasks: 
+    - name: create empty file on app server 1
+      file: 
+        path: /opt/devops/blog.txt
+        state: touch
+      when: "inventory_hostname in 'stapp01'"
+
+    - name: apply acl on /opt/devops/blog.txt
+      ansible.builtin.acl:
+        path: /opt/devops/blog.txt
+        entity: tony
+        etype: group
+        permissions: r
+        state: present
+      when: "inventory_hostname in 'stapp01'"
+          
+    - name: create empty file on app server 2
+      file:
+        path: /opt/devops/story.txt
+        state: touch
+
+      when: "inventory_hostname in 'stapp02'"
+
+    - name: Apply acl /opt/devops/story.txt on app server 2
+      ansible.builtin.acl: 
+        path: /opt/devops/story.txt
+        entity: steve
+        etype: user 
+        permissions: rw
+        state: present
+      when: "inventory_hostname in 'stapp02'"
+    
+    - name: Create empty file on app sever 3
+      file:
+        path: /opt/devops/media.txt
+        state: touch
+      when: "inventory_hostname in 'stapp03'"
+
+    - name: Apply acl /opt/devops/media.txt on app server 3
+      ansible.builtin.acl: 
+        path: /opt/devops/media.txt
+        entity: banner
+        etype: group 
+        permissions: rw
+        state: present
+      when: "inventory_hostname in 'stapp03'"
