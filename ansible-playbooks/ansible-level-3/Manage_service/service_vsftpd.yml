@@ -1,0 +1,16 @@
+---
+- name: Service Playbook
+  hosts: all
+  become: yes 
+  tasks:
+    - name: Install Vsftpd
+      yum: 
+        name: vsftpd
+        state: latest
+        
+    - name: Service start and enable Vsftpd
+      service:
+        name: vsftpd
+        state: started
+        enabled: yes
+      
