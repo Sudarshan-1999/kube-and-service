@@ -13,7 +13,8 @@ spec:
         memory: "128Mi"
         cpu: "500m"
     command: ['sh', '-c']
-l      - |
+    args: 
+      - |
         while true; 
         do 
           echo -en '/n'; 
