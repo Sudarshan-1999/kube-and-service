@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iron-db-deployment-xfusion
+  labels:
+    db: mariadb
+  namespace: iron-namespace-xfusion
+spec:
+  selector:
+    matchLabels:
+      db: mariadb
+  template:
+    metadata:
+      labels:
+        db: mariadb
+    spec:
+      volumes: 
+        - name: db
+          emptyDir: {}
+
+      containers:
+      - name: iron-db-container-xfusion
+        image: kodekloud/irondb:2.0
+        volumeMounts:
+          - name: db
+            mountPath: /var/lib/mysql
+        env:
+          - name: MYSQL_DATABASE
+            value: database_blog
+          
+          - name: MYSQL_ROOT_PASSWORD
+            value: QWyu6*&^fdTF
+                    
+          - name: MYSQL_PASSWORD
+            value: QWyu6*&^fdTF
+
+          - name: MYSQL_USER
+            value: sudarshan
+        
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "256m"
+        ports:
+        - containerPort: 3306

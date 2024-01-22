@@ -13,4 +13,4 @@
         Volume to be named as ic-volume-devops and it should be an emptyDir type.
 
 # Note: 
-        The kubectl utility on jump_host has been configured to work with the kubernetes cluster.
+    The kubectl utility on jump_host has been configured to work with the kubernetes cluster.

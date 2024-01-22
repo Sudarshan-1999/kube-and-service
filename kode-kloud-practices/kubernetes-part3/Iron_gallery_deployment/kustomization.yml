@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yml
+  - iron-gallery-app.yml
+  - iron-gallery-db.yml
+  - iron-gallery-service-db.yml
+  - iron-gallery-service-app.yml.yml
