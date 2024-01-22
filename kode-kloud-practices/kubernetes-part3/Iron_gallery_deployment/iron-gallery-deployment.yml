@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iron-gallery-deployment-xfusion
+  labels:
+    run: iron-gallery
+  namespace: iron-namespace-xfusion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: iron-gallery
+  template:
+    metadata:
+      labels:
+        run: iron-gallery
+    spec:
+      volumes: 
+        - name: config
+          emptyDir: {}
+
+        - name: images
+          emptyDir: {}
+
+      containers:
+      - name: iron-gallery-container-xfusion
+        image: kodekloud/irongallery:2.0
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "50m"
+        volumeMounts:
+          - name: config
+            mountPath: /usr/share/nginx/html/data
+            
+          - name: images
+            mountPath: /usr/share/nginx/html/uploads
+        env:
+          - name: MYSQL_DATABASE
+            value: database_blog
+          
+          - name: MYSQL_ROOT_PASSWORD
+            value: QWyu6*&^fdTF
+                    
+          - name: MYSQL_PASSWORD
+            value: QWyu6*&^fdTF
+
+          - name: MYSQL_USER
+            value: sudarshan
+            
+        ports:
+        - containerPort: 80
