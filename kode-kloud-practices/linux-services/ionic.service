@@ -1,0 +1,14 @@
+[Unit]
+Description=Ionic App Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/ionic serve --prod
+WorkingDirectory=/home/sudarshan/MyIonicApp
+Restart=always
+User=sudarshan
+Group=sudarshan
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
