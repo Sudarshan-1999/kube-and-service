@@ -1,0 +1,24 @@
+---
+- name: Replace Playbook
+  hosts: all
+  become: true
+  tasks:
+    - name: Replace /opt/itadmin/blog.txt on app server 1
+      replace: 
+        path: /opt/itadmin/blog.txt
+        regexp: 'xFusionCorp'
+        replace: 'Nautilus'
+      when: "inventory_hostname in 'stapp01'"
+    - name: Replace /opt/itadmin/story.txt on app server 2
+      replace: 
+        path: /opt/itadmin/story.txt
+        regexp: 'Nautilus'
+        replace: 'KodeKloud'
+      when: "inventory_hostname in 'stapp02'"
+
+    - name: Replace /opt/itadmin/media.txt on app server 3
+      replace: 
+        path: /opt/itadmin/media.txt
+        regexp: 'KodeKloud'
+        replace: 'xFusionCorp Industries'
+      when: "inventory_hostname in 'stapp03'"
