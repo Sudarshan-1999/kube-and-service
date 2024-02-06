@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+  labels:
+    app: drupal-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drupal-app
+  template:
+    metadata:
+      labels:
+        app: drupal-app
+    spec:
+      containers:
+      - name: drupal-container
+        image: drupal:8.6
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-root-pass
+                key: password
+          - name: MYSQL_DATABASE
+            valueFrom: 
+              secretKeyRef:
+                name: mysql-db-url
+                key: database
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-user-pass
+                key: username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-user-pass
+                key: password
+          - name: MYSQL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: mysql-host
+                key: host
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
