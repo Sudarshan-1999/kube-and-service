@@ -1,0 +1,34 @@
+---
+- name: Gathers fact Playbook 
+  hosts: all
+  become: true
+  tasks:
+    - name: Create an file 
+      file: 
+        path: /root/facts.txt
+        state: touch
+    - name:  create a file facts.txt under /root directory
+      blockinfile:
+        path: /root/facts.txt
+        block: |
+          Ansible managed node architecture is {{ ansible_architecture }}
+      delegate_to: "{{ inventory_hostname }}"
+      become: yes
+    
+    - name: Install httpd server
+      package:
+        name: httpd
+        state: present
+
+    - name: Copy facts.txt to index.html
+      copy:
+        src: /root/facts.txt
+        dest: /var/www/html/index.html
+        remote_src: true
+      delegate_to: "{{ inventory_hostname }}"
+      become: yes
+
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
