@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-master
+spec:
+  selector:
+    db: master-db
+    tier: backend
+  ports:
+  - port: 6379
+    targetPort: 6379
