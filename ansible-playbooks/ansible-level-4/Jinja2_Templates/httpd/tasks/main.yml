@@ -1,0 +1,9 @@
+---
+- name: Copy index.html template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: '0744'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  delegate_to: "{{ inventory_hostname }}"
