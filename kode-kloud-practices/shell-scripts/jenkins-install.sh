@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Array of available Jenkins versions
-declare -a JENKINS_VERSIONS=("2.426.1" "2.414.3" "2.414.2" "2.414.1" "2.401.3" "2.401.2" "2.401.1" "2.387.3" "2.387.2" "2.387.1" "2.375.4" "2.375.3")  # Add more versions as needed
+declare -a JENKINS_VERSIONS=("2.426.3" "2.414.3" "2.414.2" "2.414.1" "2.401.3" "2.401.2" "2.401.1" "2.387.3" "2.387.2" "2.387.1" "2.375.4" "2.375.3")  # Add more versions as needed
 
 select_version() {
     echo "Available Jenkins Versions:"
@@ -46,7 +46,7 @@ install_debian() {
 
 install_redhat() {
     # Red Hat/CentOS installation logic
-    sudo yum install -y java-1.8.0-openjdk
+    sudo yum install -y java-11-openjdk
     sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
     sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
     sudo yum install -y "jenkins-$1"
@@ -54,41 +54,3 @@ install_redhat() {
 
 # Start installation process
 select_version
-
-
-[Unit]
-Description=My React App
-After=network.target
-
-[Service]
-ExecStart=/root/.nvm/versions/node/v16.0.0/bin/serve -s build 2>&1 | tee -a /home/ec2-user/workspace/Dental_frontend-pipeline_develop/react-app.log
-WorkingDirectory=/home/ec2-user/workspace/Dental_frontend-pipeline_develop/
-Restart=always
-User=root
-Environment=NODE_ENV=production
-
-[Install]
-WantedBy=default.target
-
-[Unit]
-Description=Service for keeping the PROJECT Node server on
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash /home/ec2-user/workspace/Dental_frontend-pipeline_develop/process_n_run.sh
-
-[Install]
-WantedBy=multi-user.target
-
-
-/home/ec2-user/workspace/Dental_frontend-pipeline_develop/app/logs/*.log {
-    daily
-    rotate 7
-    compress
-    missingok
-    notifempty
-    create 0640 root root
-    postrotate
-        systemctl restart node-ivory
-    endscript
-}

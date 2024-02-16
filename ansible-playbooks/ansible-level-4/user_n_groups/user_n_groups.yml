@@ -1,0 +1,36 @@
+---
+- name: Create users and groups
+  hosts: stapp03
+  become: yes
+  tasks:
+    - name: creating groups
+      group:
+        name: admins
+        state: present
+
+    - name: creating groups
+      group:
+        name: developers
+        state: present
+    - name: create a list of users from admins in the users.yml
+      user:
+        name: "{{ item }}"
+        password: "{{ 'LQfKeWWxWD' | password_hash ( 'sha512' ) }}"
+        state: present
+        groups: admins,wheel
+      loop:
+      - rob
+      - david
+      - joy
+    - name: Create the developers users from the users.yml
+      user:
+        name: "{{ item }}"
+        state: present
+        password: "{{ 'Rc5C9EyvbU' | password_hash ( 'sha512' ) }}"
+        home: /var/www/"{{ item }}"vm
+        groups: developers
+      loop:
+      - tim
+      - ray
+      - jim
+      - mark
