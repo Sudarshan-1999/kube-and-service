@@ -1,0 +1,46 @@
+---
+- name: httpd and Php Playbook
+  become: true
+  hosts: all
+  tasks:
+    - name: Install httpd
+      yum:
+        name: "{{ item  }}"
+        state: present
+      loop:
+      - httpd
+      - php
+
+    - name: start httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: true
+    
+    - name: Create directory /var/www/html/myroot
+      file:
+        path: /var/www/html/myroot
+        state: directory
+
+    - name: Change default root /etc/httpd/conf/httpd.conf
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        state: present
+        regexp: '^DocumentRoot "/var/www/html"'
+        line: 'DocumentRoot "/var/www/html/myroot"'
+
+    - name: Copy php file
+      copy:
+        src: templates/phpinfo.php.j2
+        dest: /var/www/html/myroot/phpinfo.php
+        owner: apache
+        group: apache
+        remote_src: yes
+       
+      notify: restart apache
+  
+  handlers: 
+    - name: restart apache
+      service: 
+        name: httpd
+        state: restarted

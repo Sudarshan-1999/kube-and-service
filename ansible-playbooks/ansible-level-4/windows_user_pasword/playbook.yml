@@ -1,0 +1,13 @@
+---
+- name: Password change Playbook
+  hosts: all
+  become: false
+  gather_facts: false
+  tasks:
+    - name: user password change
+      win_user:
+        name: "{{ lookup('vars', 'ansible_user') }}"
+        password: ""
+        state: present
+        update_password: always
+        password_never_expires: true
