@@ -1,0 +1,34 @@
+---
+- name: Ansible Condition Playbook
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Copy blog.txt in app_server 1 
+      copy: 
+        src: /usr/src/devops/blog.txt
+        dest: /opt/devops
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+        mode: 0644
+        remote_src: yes
+      when: 'inventory_hostname in "stapp01"'
+    - name: Copy story.txt in app_server 2
+      copy: 
+        src: /usr/src/devops/story.txt
+        dest: /opt/devops
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+        mode: 0644
+        remote_src: yes
+      when: 'inventory_hostname in "stapp02"'
+    
+    - name: copy media.txt in app_server 3
+      copy: 
+        src: /usr/src/devops/media.txt
+        dest: /opt/devops
+        owner: "{{ lookup('vars', 'ansible_user') }}"
+        group: "{{ lookup('vars', 'ansible_user') }}"
+        mode: 0644
+        remote_src: yes
+      when: 'inventory_hostname in "stapp03"'
